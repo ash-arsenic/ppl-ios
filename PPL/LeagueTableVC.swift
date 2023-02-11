@@ -20,12 +20,32 @@ class LeagueTableVC: UIViewController {
         leagueTableTV.delegate = self
         leagueTableTV.dataSource = self
         setUpFixtures()
+        closureDefinition()
+        sortTeams()
     }
 
     @IBAction func updateTableAction(_ sender: Any) {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "FixturesVC") as? FixturesVC
         vc?.fixtures = self.fixtures
         navigationController?.pushViewController(vc!, animated: true)
+    }
+    
+    func closureDefinition() {
+        FixturesVC.updateFixtureAction = { fixtures in
+            for i in fixtures {
+                for j in 0..<(self.teams?.count)!{
+                    if self.teams?[j].name == i.homeTeam?.name {
+                        self.teams?[j] = i.homeTeam!
+                    }
+                    if self.teams?[j].name == i.awayTeam?.name {
+                        self.teams?[j] = i.awayTeam!
+                    }
+                }
+            }
+            self.fixtures = fixtures
+            self.sortTeams()
+            self.leagueTableTV.reloadData()
+        }
     }
     
     func setUpFixtures() {
@@ -35,9 +55,13 @@ class LeagueTableVC: UIViewController {
                 if j == i {
                     continue
                 }
-                fixtures?.append(Fixtures(homeTeam: teams?[i], awayTeam: teams?[j]))
+                fixtures?.append(Fixtures(homeTeam: teams?[i], awayTeam: teams?[j], score: [-1, -1]))
             }
         }
+    }
+    
+    func sortTeams() {
+        teams = teams?.sorted {($0.points)! > ($1.points)!}
     }
 }
 

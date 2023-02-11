@@ -9,7 +9,7 @@ import UIKit
 
 class MatchDetailsPopup: UIView {
 
-    static var popupAction: ((Fixtures)->())?
+    static var popupAction: ((String?, String?)->())?
 //    Vars and Outlets
     @IBOutlet var parentView: MatchDetailsPopup!
     @IBOutlet weak var popupView: UIView!
@@ -55,10 +55,10 @@ class MatchDetailsPopup: UIView {
 //                          "gd": (fixture?.awayTeam?.gd - homeTeamScore + awayTeamScore),
 //                          "points": fixture?.awayTeam?.points - 3]
 //
-////            let ht = TeamModel(data: htData)
-////            let at = TeamModel(data: atData)
-//
+//            let ht = TeamModel(data: htData)
+//            let at = TeamModel(data: atData)
 //            updatedFixture = Fixtures(homeTeam: ht, awayTeam: at)
+//
 //        } else if  homeTeamScore! < awayTeamScore! {
 //            let htData = ["name": fixture?.homeTeam?.name,
 //                          "wins": fixture?.homeTeam?.wins,
@@ -77,11 +77,35 @@ class MatchDetailsPopup: UIView {
 //                          "gd": (fixture?.awayTeam?.gd - homeTeamScore + awayTeamScore),
 //                          "points": fixture?.awayTeam?.points + 3]
 //
-////            let ht = TeamModel(data: htData)
-////            let at = TeamModel(data: atData)
+//            let ht = TeamModel(data: htData)
+//            let at = TeamModel(data: atData)
+//
+//            updatedFixture = Fixtures(homeTeam: ht, awayTeam: at)
+//
+//        } else {
+//            let htData = ["name": fixture?.homeTeam?.name,
+//                          "wins": fixture?.homeTeam?.wins,
+//                          "loses": fixture?.homeTeam?.loses,
+//                          "draws": fixture?.homeTeam?.draws + 1,
+//                          "goalFor": fixture?.homeTeam?.goalFor + homeTeamScore,
+//                          "goalBy": fixture?.homeTeam?.goalBy + awayTeamScore,
+//                          "gd": fixture?.homeTeam?.gd,
+//                          "points": fixture?.homeTeam?.points + 1]
+//            let atData = ["name": fixture?.awayTeam?.name,
+//                          "wins": fixture?.awayTeam?.wins,
+//                          "loses": fixture?.awayTeam?.loses,
+//                          "draws": fixture?.awayTeam?.draws + 1,
+//                          "goalFor": fixture?.awayTeam?.goalFor + awayTeamScore,
+//                          "goalBy": fixture?.awayTeam?.goalBy + homeTeamScore,
+//                          "gd": fixture?.awayTeam?.gd,
+//                          "points": fixture?.awayTeam?.points + 1]
+//
+//            let ht = TeamModel(data: htData)
+//            let at = TeamModel(data: atData)
 //
 //            updatedFixture = Fixtures(homeTeam: ht, awayTeam: at)
 //        }
+        MatchDetailsPopup.popupAction?(homeTeamScoreTF.text ?? "0", awayTeamScoreTF.text ?? "0")
         parentView.removeFromSuperview()
     }
     
@@ -95,6 +119,7 @@ class MatchDetailsPopup: UIView {
         self.fixture = fixture
         homeTeamNameLB.text = fixture?.homeTeam?.name ?? "NA"
         awayTeamNameLB.text = fixture?.awayTeam?.name ?? "NA"
+        
         let keyWindows = UIApplication.shared.windows.first
         keyWindows?.addSubview(parentView)
     }
